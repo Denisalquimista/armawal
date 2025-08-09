@@ -1,0 +1,28 @@
+name: Upload arquivo para Walrus
+
+on:
+  workflow_dispatch:  # permite rodar manualmente o workflow
+
+jobs:
+  walrus-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Fazer checkout do código
+      uses: actions/checkout@v3
+
+    - name: Baixar e instalar Walrus CLI
+      run: |
+        curl -L https://github.com/MystenLabs/walrus/releases/latest/download/walrus-testnet-v1.30.0-ubuntu-x86_64.tgz -o walrus.tgz
+        tar -xvzf walrus.tgz
+        chmod +x walrus
+        sudo mv walrus /usr/local/bin/
+
+    - name: Criar arquivo wallet.json a partir do segredo
+      run: echo '${{ secrets.SUI_KEYSTORE }}' > wallet.json
+
+    - name: Fazer upload do arquivo para Walrus
+      run: |
+        walrus store --end-epoch 18 ./yets.png --wallet ./wallet.json --network mainnet
+      env:
+        SUI_ADDRESS: ${{ vars.SUI_ADDRESS }}
