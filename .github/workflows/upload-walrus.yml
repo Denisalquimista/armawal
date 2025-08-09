@@ -1,0 +1,25 @@
+name: Upload arquivo para Walrus
+
+on:
+  workflow_dispatch:   # permite rodar manualmente no GitHub
+
+jobs:
+  walrus-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Fazer checkout do código
+      uses: actions/checkout@v3
+
+    - name: Baixar e instalar Walrus CLI
+      run: |
+        curl -L https://github.com/MystenLabs/walrus/releases/latest/download/walrus-linux-x86_64 -o walrus
+        chmod +x walrus
+        sudo mv walrus /usr/local/bin/
+
+    - name: Fazer upload do arquivo para Walrus
+      run: |
+        walrus store --end-epoch 18 ./yets.png --wallet-env SUI_KEYSTORE --network mainnet
+      env:
+        SUI_KEYSTORE: ${{ secrets.SUI_KEYSTORE }}
+        SUI_ADDRESS: ${{ vars.SUI_ADDRESS }}
