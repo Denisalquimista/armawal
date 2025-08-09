@@ -1,0 +1,27 @@
+name: Upload para Walrus
+
+on:
+  workflow_dispatch:
+
+jobs:
+  upload-blob:
+    runs-on: ubuntu-latest
+
+    env:
+      SUI_KEYSTORE: ${{ secrets.SUI_KEYSTORE }}
+      SUI_ADDRESS: ${{ secrets.SUI_ADDRESS }}
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Baixar e instalar Walrus CLI
+        run: |
+          wget https://github.com/MystenLabs/walrus/releases/latest/download/walrus-mainnet-v1.30.0-ubuntu-x86_64.tgz
+          tar -xvzf walrus-mainnet-v1.30.0-ubuntu-x86_64.tgz
+          chmod +x walrus
+          sudo mv walrus /usr/local/bin/
+
+      - name: Fazer upload do arquivo
+        run: |
+          walrus store --end-epoch 18 ./yets.png --wallet-env SUI_KEYSTORE --network mainnet
