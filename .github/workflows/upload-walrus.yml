@@ -1,7 +1,7 @@
 name: Upload arquivo para Walrus
 
 on:
-  workflow_dispatch:   # permite rodar manualmente no GitHub
+  workflow_dispatch:
 
 jobs:
   walrus-upload:
@@ -10,6 +10,9 @@ jobs:
     steps:
     - name: Fazer checkout do código
       uses: actions/checkout@v3
+
+    - name: Listar arquivos para debug
+      run: ls -l
 
     - name: Baixar e instalar Walrus CLI
       run: |
@@ -22,4 +25,3 @@ jobs:
         walrus store --end-epoch 18 ./yets.png --wallet-env SUI_KEYSTORE --network mainnet
       env:
         SUI_KEYSTORE: ${{ secrets.SUI_KEYSTORE }}
-        SUI_ADDRESS: ${{ vars.SUI_ADDRESS }}
