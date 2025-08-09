@@ -17,7 +17,7 @@ jobs:
 
       - name: Baixar e instalar Walrus CLI
         run: |
-          wget https://github.com/MystenLabs/walrus/releases/latest/download/walrus-mainnet-v1.30.0-ubuntu-x86_64.tgz
+          wget https://github.com/MystenLabs/walrus/releases/download/testnet-v1.30.0/walrus-testnet-v1.30.0-ubuntu-x86_64.tgz
           tar -xvzf walrus-mainnet-v1.30.0-ubuntu-x86_64.tgz
           chmod +x walrus
           sudo mv walrus /usr/local/bin/
